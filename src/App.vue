@@ -19,7 +19,9 @@
       <select name="homework" v-model="selectedInfo">
         <option v-for="(infoItem, index) in info" :key="index" :value="index">{{ infoItem.name }}</option>
       </select>
-      <button @click="toggle">Toggle</button><label for="state">finished:</label><label name="state">{{info[selectedInfo].finished}}</label>
+      <button @click="toggle">Toggle</button>
+      <label for="state">finished:</label>
+      <label name="state">{{ finished }}</label>
       <div>
         <ul>
           <li v-for="name in uploadedList" :key="name">{{ name }}</li>
@@ -50,6 +52,12 @@ export default {
         return [];
       }
       return JSON.parse(this.info[this.selectedInfo].uploaded_list);
+    },
+    finished: function() {
+      if (this.info[this.selectedInfo] === undefined) {
+        return '';
+      }
+      return this.info[this.selectedInfo].finished;
     }
   },
   methods: {
