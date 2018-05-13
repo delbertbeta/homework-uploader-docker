@@ -22,6 +22,16 @@
             <el-option label="是" value="1"></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="截止日期">
+          <el-date-picker
+            v-model="addForm.ddl"
+            type="datetime"
+            placeholder="选择日期时间">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="作业提醒">
+          <el-input type="textarea" v-model="addForm.tip"></el-input>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="add">添加作业入口</el-button>
         </el-form-item>
@@ -34,6 +44,9 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="toggle">{{finished ? '已完成' : '正在进行中'}}</el-button>
+        </el-form-item>
+        <el-form-item>
+          <a :href="'/api/download?id=' + id" :download="name + 'zip'"><el-button type="primary">打包下载</el-button></a>
         </el-form-item>
       </el-form>
       <el-table
@@ -57,7 +70,9 @@ export default {
       addForm: {
         name: "",
         multifile: null,
-        createFolder: null
+        createFolder: null,
+        tip: "",
+        ddl: null
       },
       info: [],
       selectedInfo: null
@@ -79,6 +94,18 @@ export default {
         return false;
       }
       return this.info[this.selectedInfo].finished;
+    },
+    id: function() {
+            if (this.info[this.selectedInfo] === undefined) {
+        return 0;
+      }
+      return this.info[this.selectedInfo].id;
+    },
+    name: function() {
+            if (this.info[this.selectedInfo] === undefined) {
+        return "null";
+      }
+      return this.info[this.selectedInfo].name;
     }
   },
   methods: {
@@ -86,7 +113,9 @@ export default {
       let data = {
         name: this.addForm.name,
         multifile: this.addForm.multifile === 0 ? false : true,
-        createFolder: this.addForm.createFolder === 0 ? false : true
+        createFolder: this.addForm.createFolder === 0 ? false : true,
+        ddl: this.addForm.ddl,
+        tip: this.addForm.tip
       };
       ajax.post(
         "/api/add_homework",
@@ -94,6 +123,7 @@ export default {
         true,
         function() {
           alert("成功!");
+          window.location.reload();
         },
         function() {
           alert("失败!");
@@ -108,6 +138,7 @@ export default {
         false,
         function() {
           alert("成功!");
+          window.location.reload();
         },
         function() {
           alert("失败!");
