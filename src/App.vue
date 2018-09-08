@@ -52,24 +52,23 @@
       <el-table
       :data="uploadedList">
         <el-table-column
-          prop="name"
+          prop="who"
           label="姓名"
           width="180">
         </el-table-column>
         <el-table-column
           prop="originalFile"
-          label="源文件"
-          width="180">
+          label="源文件">
         </el-table-column>
         <el-table-column
           prop="fileSize"
           label="文件大小"
-          width="180">
+          :formatter="sizeFormatter">
         </el-table-column>
         <el-table-column
           prop="date"
           label="上传时间"
-          width="180">
+          :formatter="timeFormatter">
         </el-table-column>
       </el-table>
     </el-main>
@@ -156,6 +155,13 @@ export default {
         },
         false
       );
+    },
+    sizeFormatter(row) {
+      return (row.fileSize / 1024 / 1024).toFixed(2) + "MB";
+    },
+
+    timeFormatter(row) {
+      return new Date(row.date).toLocaleString();
     }
   },
   mounted: function() {
