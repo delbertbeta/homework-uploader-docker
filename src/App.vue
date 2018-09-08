@@ -56,6 +56,21 @@
           label="姓名"
           width="180">
         </el-table-column>
+        <el-table-column
+          prop="originalFile"
+          label="源文件"
+          width="180">
+        </el-table-column>
+        <el-table-column
+          prop="fileSize"
+          label="文件大小"
+          width="180">
+        </el-table-column>
+        <el-table-column
+          prop="date"
+          label="上传时间"
+          width="180">
+        </el-table-column>
       </el-table>
     </el-main>
   </div>
@@ -83,11 +98,7 @@ export default {
       if (this.info[this.selectedInfo] === undefined) {
         return [];
       }
-      return JSON.parse(this.info[this.selectedInfo].uploaded_list).map((v) => {
-        return {
-          name: v
-        }
-      });
+      return this.info[this.selectedInfo].uploads;
     },
     finished: function() {
       if (this.info[this.selectedInfo] === undefined) {
@@ -96,13 +107,13 @@ export default {
       return this.info[this.selectedInfo].finished;
     },
     id: function() {
-            if (this.info[this.selectedInfo] === undefined) {
+      if (this.info[this.selectedInfo] === undefined) {
         return 0;
       }
       return this.info[this.selectedInfo].id;
     },
     name: function() {
-            if (this.info[this.selectedInfo] === undefined) {
+      if (this.info[this.selectedInfo] === undefined) {
         return "null";
       }
       return this.info[this.selectedInfo].name;
@@ -112,8 +123,8 @@ export default {
     add: function() {
       let data = {
         name: this.addForm.name,
-        multifile: this.addForm.multifile === 0 ? false : true,
-        createFolder: this.addForm.createFolder === 0 ? false : true,
+        multifile: this.addForm.multifile === "0" ? false : true,
+        createFolder: this.addForm.createFolder === "0" ? false : true,
         ddl: this.addForm.ddl,
         tip: this.addForm.tip
       };
@@ -166,5 +177,4 @@ export default {
 </script>
 
 <style>
-
 </style>
