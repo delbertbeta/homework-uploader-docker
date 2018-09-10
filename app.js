@@ -1,14 +1,17 @@
 const express = require('express');
 const proxy = require('http-proxy-middleware');
+const exec = require('child_process').exec;
 
 const app = express();
 
-app.use('/', express.static('homework-uploader/dist'));
+exec('cd /app/homework-uploader-api && forever start app.js');
 
-app.use('/admin', express.static('homework-uploader-manage/dist'));
+app.use('/', express.static('homework-uploader'));
+
+app.use('/admin', express.static('homework-uploader-manage'));
 
 app.use('/api', proxy({
-    target: '127.0.0.1:4000',
+    target: 'http://127.0.0.1:4000',
     changeOrigin: true,
     cookieDomainRewrite: true
 }))

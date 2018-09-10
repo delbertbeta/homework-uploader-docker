@@ -4,24 +4,24 @@ WORKDIR /app
 
 ADD . /app
 
-RUN cd /app/homework-uploader && \
-    yarn install --production && \
-    yarn run build && \
+RUN npm install -g cnpm && \
+    cd /app/homework-uploader && \
+    cnpm install && \
+    cnpm run build && \
     cd /app/homework-uploader-manage && \
-    yarn install --production && \
-    yarn run build && \
+    cnpm install && \
+    cnpm run build && \
     cd /app/homework-uploader-api && \
-    yarn install --production && \
+    cnpm install && \
     echo "module.exports = {\
     database: {\
         type: 'sqlite',\
         url: 'data/db.sqlite'\
       }\
     };" > config.js && \
-    yarn install -g forever && \
-    forever start app.js && \
+    cnpm install -g forever && \
     cd /app && \
-    yarn install --production
+    cnpm install
 
 EXPOSE 80
 
